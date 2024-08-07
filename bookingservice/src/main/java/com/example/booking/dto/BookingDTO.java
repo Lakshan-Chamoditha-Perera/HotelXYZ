@@ -1,6 +1,5 @@
-package com.example.customer.entity;
+package com.example.booking.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,19 +10,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Booking {
+public class BookingDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long customerId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private Double totalAmount;
 
-    @ElementCollection
-    @CollectionTable(name = "booking_rooms", joinColumns = @JoinColumn(name = "booking_id"))
     private List<Long> roomIds;
-
 }

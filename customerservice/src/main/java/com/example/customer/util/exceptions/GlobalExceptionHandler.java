@@ -1,8 +1,8 @@
-package com.example.customer.util;
+package com.example.customer.util.exceptions;
 
 import com.example.customer.payloads.StandardResponse;
-import com.example.customer.util.exceptions.CustomerAlreadyExistsException;
-import com.example.customer.util.exceptions.CustomerNotFoundException;
+import com.example.customer.util.exceptions.custom.CustomerAlreadyExistsException;
+import com.example.customer.util.exceptions.custom.CustomerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

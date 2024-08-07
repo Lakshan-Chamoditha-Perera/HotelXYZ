@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(RoomAlreadyExistsException.class)
-    public ResponseEntity<StandardResponse> handleCustomerAlreadyExistsException(RoomAlreadyExistsException e) {
+    public ResponseEntity<StandardResponse> handleRoomAlreadyExistsException(RoomAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
                 StandardResponse.builder()
                         .code(HttpStatus.CONFLICT.value())
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RoomNotFoundException.class)
-    public ResponseEntity<StandardResponse> handleCustomerNotFoundException(RoomNotFoundException e) {
+    public ResponseEntity<StandardResponse> handleRoomNotFoundException(RoomNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 StandardResponse.builder()
                         .code(HttpStatus.NOT_FOUND.value())

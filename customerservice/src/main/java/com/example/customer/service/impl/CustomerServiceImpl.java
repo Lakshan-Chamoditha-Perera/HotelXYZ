@@ -2,10 +2,10 @@ package com.example.customer.service.impl;
 
 import com.example.customer.dto.CustomerDTO;
 import com.example.customer.entity.Customer;
+import com.example.customer.util.exceptions.custom.CustomerAlreadyExistsException;
 import com.example.customer.repo.CustomerRepository;
 import com.example.customer.service.CustomerService;
-import com.example.customer.util.exceptions.CustomerAlreadyExistsException;
-import com.example.customer.util.exceptions.CustomerNotFoundException;
+import com.example.customer.util.exceptions.custom.CustomerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

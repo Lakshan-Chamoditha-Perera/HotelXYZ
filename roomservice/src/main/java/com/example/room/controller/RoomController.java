@@ -20,7 +20,7 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<StandardResponse> getRooms(
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+            @RequestParam(name = "size",  required = false) Integer size,
             @RequestParam(name = "roomNumber", required = false) String roomNumber,
             @RequestParam(name = "type", required = false) RoomType type,
             @RequestParam(name = "isAvailable", required = false) Boolean isAvailable) {

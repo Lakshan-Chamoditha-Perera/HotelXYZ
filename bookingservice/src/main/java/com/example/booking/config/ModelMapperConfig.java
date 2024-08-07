@@ -1,4 +1,4 @@
-package com.example.customer.config;
+package com.example.booking.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
