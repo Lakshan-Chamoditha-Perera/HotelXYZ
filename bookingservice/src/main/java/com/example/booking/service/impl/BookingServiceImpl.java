@@ -82,16 +82,15 @@ public class BookingServiceImpl implements BookingService {
 
             // 3. Create and Save Booking
             Booking booking = modelMapper.map(bookingDTO, Booking.class);
-            booking.setCustomerId(bookingDTO.getCustomerId());
             booking.setTotalAmount(totalAmount);
-            booking.getRoomIds().addAll(bookingDTO.getRoomIds());
-            Booking savedBooking = bookingRepository.save(booking);
+
+            bookingRepository.save(booking);
 
             // 4. Update Customer with Booking ID (If required)
             if (customerDTO.getBookingIds() == null) {
                 customerDTO.setBookingIds(new ArrayList<>());
             }
-            customerDTO.getBookingIds().add(savedBooking.getId());
+            customerDTO.getBookingIds().add(booking.getId());
             customerWebClient
                     .patch()
                     .uri("/customers/{customerId}", bookingDTO.getCustomerId())
@@ -113,7 +112,7 @@ public class BookingServiceImpl implements BookingService {
             }
 
             // 6. Return Booking Response
-            return modelMapper.map(savedBooking, BookingDTO.class);
+            return modelMapper.map(booking, BookingDTO.class);
 
         } catch (WebClientResponseException e){
             log.error("ERROR: {}", e.getMessage());
