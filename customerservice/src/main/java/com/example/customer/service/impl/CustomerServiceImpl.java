@@ -28,10 +28,8 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getCustomer(Integer id) {
         log.info("Method getCustomer called with id {}", id);
         try {
-            if (!customerRepository.existsById(id))
-                return new CustomerDTO();
-
-            return modelMapper.map(customerRepository.findById(id).get(), CustomerDTO.class);
+            Customer customer = customerRepository.findById(id).orElse(new Customer());
+            return modelMapper.map(customer, CustomerDTO.class);
         } catch (Exception e) {
             log.error("ERROR: getCustomer failed with id {}", id);
             throw e;
@@ -57,10 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
         log.info("Method updateCustomer called with id {}", customerDTO.getId());
         try{
 
-            if (!customerRepository.existsById(id))
-                throw new CustomerNotFoundException("Customer not found");
-
-            Customer customer = customerRepository.findById(id).get();
+            Customer customer = customerRepository.findById(id)
+                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
 
             customer.setNic(customerDTO.getNic());
             customer.setFirstName(customerDTO.getFirstName());
