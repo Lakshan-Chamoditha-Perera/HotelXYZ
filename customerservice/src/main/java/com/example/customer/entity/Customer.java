@@ -20,6 +20,7 @@ public class Customer {
     private String lastName;
     private String email;
     private String phone;
+    private String nic;
 
     @ElementCollection
     @CollectionTable(name = "customer_bookings", joinColumns = @JoinColumn(name = "customer_id"))
