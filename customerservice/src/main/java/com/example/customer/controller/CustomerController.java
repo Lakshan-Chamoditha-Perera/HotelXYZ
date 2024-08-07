@@ -13,7 +13,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController {
+
     private final CustomerService customerService;
+
+    @GetMapping()
+    public ResponseEntity<StandardResponse> getCustomers(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(name = "firstName", required = false) String firstName,
+            @RequestParam(name = "lastName", required = false) String lastName,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "phone", required = false) String phone,
+            @RequestParam(name = "nic", required = false) String nic) {
+
+        if (size == 0) {
+            return ResponseEntity.ok(StandardResponse.builder()
+                    .code(200)
+                    .message("Customers retrieved successfully")
+                    .data(customerService.getCustomersWithoutPagination(firstName, lastName, email, phone, nic))
+                    .build());
+        }
+
+        return ResponseEntity.ok(StandardResponse.builder()
+                .code(200)
+                .message("Customers retrieved successfully")
+                .data(customerService.getCustomersWithPagination(page, size, firstName, lastName, email, phone, nic))
+                .build());
+    }
+
 
     @PostMapping
     public ResponseEntity<StandardResponse> createCustomer(@RequestBody CustomerDTO customerDTO) {

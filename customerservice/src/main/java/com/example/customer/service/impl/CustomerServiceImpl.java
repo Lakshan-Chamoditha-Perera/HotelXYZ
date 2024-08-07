@@ -5,10 +5,17 @@ import com.example.customer.entity.Customer;
 import com.example.customer.repo.CustomerRepository;
 import com.example.customer.service.CustomerService;
 import com.example.customer.util.exceptions.CustomerAlreadyExistsException;
+import com.example.customer.util.exceptions.CustomerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
         try{
 
             if (!customerRepository.existsById(id))
-                throw new RuntimeException("Customer not found");
+                throw new CustomerNotFoundException("Customer not found");
 
             Customer customer = customerRepository.findById(id).get();
 
@@ -75,13 +82,39 @@ public class CustomerServiceImpl implements CustomerService {
         log.info("Method deleteCustomer called with id {}", id);
         try {
             if (!customerRepository.existsById(id))
-                throw new RuntimeException("Customer not found");
+                throw new CustomerNotFoundException("Customer not found");
 
             customerRepository.deleteById(id);
             log.info("deleteCustomer success with id {}", id);
             return true;
         } catch (Exception e) {
             log.error("ERROR: deleteCustomer failed with id {}", id);
+            throw e;
+        }
+    }
+
+    @Override
+    public Page<CustomerDTO> getCustomersWithPagination(int page, int size, String firstName, String lastName, String email, String phone, String nic) {
+        try{
+            log.info("Method getCustomersWithPagination called with page {}, size {}, firstName {}, lastName {}, email {}, phone {}, nic {}", page, size, firstName, lastName, email, phone, nic);
+            Pageable pageable = PageRequest.of(page, size);
+            return customerRepository.findCustomerWithPagination(firstName, lastName, email, phone, nic, pageable);
+        }catch (RuntimeException e) {
+            log.error("ERROR: {}",e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public List<CustomerDTO> getCustomersWithoutPagination(String firstName, String lastName, String email, String phone, String nic) {
+        log.info("Method getCustomersWithoutPagination called with firstName {}, lastName {}, email {}, phone {}, nic {}", firstName, lastName, email, phone, nic);
+        try{
+            return customerRepository.findCustomersWithoutPagination(firstName, lastName, email, phone, nic).stream().map(
+                    (element) ->
+                            modelMapper.map(element, CustomerDTO.class))
+                    .collect(Collectors.toList());
+        }catch (Exception e) {
+            log.error("ERROR: {}",e.getMessage());
             throw e;
         }
     }

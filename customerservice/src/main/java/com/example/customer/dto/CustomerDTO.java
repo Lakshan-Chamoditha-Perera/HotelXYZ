@@ -19,4 +19,13 @@ public class CustomerDTO {
     private String nic;
 
     private List<Long> bookingIds;
+
+    public CustomerDTO(Long id, String firstName, String lastName, String email, String phone, String nic) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.nic = nic;
+    }
 }
