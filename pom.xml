@@ -12,6 +12,7 @@
         <module>roomservice</module>
         <module>customerservice</module>
         <module>bookingservice</module>
+        <module>discoveryserver</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
