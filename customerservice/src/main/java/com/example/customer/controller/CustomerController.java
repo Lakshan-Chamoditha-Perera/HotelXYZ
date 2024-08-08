@@ -19,7 +19,7 @@ public class CustomerController {
     @GetMapping()
     public ResponseEntity<StandardResponse> getCustomers(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(name = "size", defaultValue = "0", required = false) int size,
             @RequestParam(name = "firstName", required = false) String firstName,
             @RequestParam(name = "lastName", required = false) String lastName,
             @RequestParam(name = "email", required = false) String email,

@@ -16,12 +16,12 @@ public class WebClientConfig {
     @Bean
     public WebClient customerWebClient() {
         return webClientBuilder()
-                .baseUrl("http://customer-service/api/v1").build();
+                .baseUrl("http://apigateway/api/v1").build();
     }
     @Bean
     public WebClient roomWebClient() {
         return webClientBuilder()
-                .baseUrl("http://room-service/api/v1").build();
+                .baseUrl("http://apigateway/api/v1").build();
     }
 
 }
