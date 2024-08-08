@@ -40,4 +40,5 @@ build/
 roomservice/target
 customerservice/target
 bookingservice/target
-
+discoveryserver/target
+apigateway/target
