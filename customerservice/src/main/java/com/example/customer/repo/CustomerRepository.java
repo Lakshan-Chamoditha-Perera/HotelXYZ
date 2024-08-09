@@ -21,7 +21,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             "AND (?2 IS NULL OR c.lastName LIKE %?2%) " +
             "AND (?3 IS NULL OR c.email LIKE %?3%) " +
             "AND (?4 IS NULL OR c.phone LIKE %?4%) " +
-            "AND (?5 IS NULL OR c.nic LIKE %?5%)")
+            "AND (?5 IS NULL OR c.nic LIKE %?5%) ORDER BY c.id DESC ")
     Page<CustomerDTO> findCustomerWithPagination(String firstName, String lastName, String email, String phone, String nic, Pageable pageable);
 
     @Query(value = "SELECT * FROM customer " +
@@ -29,6 +29,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
                     "AND (?2 IS NULL OR last_name LIKE %?2%) " +
                     "AND (?3 IS NULL OR email LIKE %?3%) " +
                     "AND (?4 IS NULL OR phone LIKE %?4%) " +
-                    "AND (?5 IS NULL OR nic LIKE %?5%)", nativeQuery = true )
+                    "AND (?5 IS NULL OR nic LIKE %?5%) ORDER BY id DESC ", nativeQuery = true )
     List<Customer> findCustomersWithoutPagination(String firstName, String lastName, String email, String phone, String nic);
 }

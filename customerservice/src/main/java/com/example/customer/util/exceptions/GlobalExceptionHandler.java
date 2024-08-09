@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<StandardResponse> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+        return ResponseEntity.status(HttpStatus.OK).body(
                 StandardResponse.builder()
                         .code(HttpStatus.CONFLICT.value())
                         .message(e.getMessage())
