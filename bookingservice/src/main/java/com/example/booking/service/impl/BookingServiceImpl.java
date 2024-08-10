@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -77,17 +78,12 @@ public class BookingServiceImpl implements BookingService {
                     case PENDING:
                         throw  new RoomNotAvailableException("Room with ID " + roomId + " is under review.");
                 }
-
-                //accumulate total amount
-                totalAmount+= roomDTO.getPrice();
                 bookedRooms.add(roomDTO);
             }
 
 
             // 3. Create and Save Booking
             Booking booking = modelMapper.map(bookingDTO, Booking.class);
-            booking.setTotalAmount(totalAmount);
-
             bookingRepository.save(booking);
 
             // 4. Update Customer with Booking ID (If required)
@@ -123,4 +119,20 @@ public class BookingServiceImpl implements BookingService {
             throw e;
         }
     }
+
+    @Override
+    public List<BookingDTO> getBookings() {
+        try {
+            log.info("Method getBookings called");
+            return bookingRepository
+                    .findAll()
+                    .stream()
+                    .map((element) -> modelMapper.map(element, BookingDTO.class))
+                    .collect(Collectors.toList());
+        }catch (Exception e) {
+            log.error("ERROR: {}", e.getMessage());
+         throw e;
+        }
+    }
+
 }

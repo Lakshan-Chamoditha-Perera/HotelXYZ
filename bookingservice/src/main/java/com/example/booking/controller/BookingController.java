@@ -6,10 +6,7 @@ import com.example.booking.payloads.StandardResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -27,4 +24,17 @@ public class BookingController {
                         .build()
         );
     }
+
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<StandardResponse> getBookings() {
+        return ResponseEntity.ok(
+                StandardResponse.builder()
+                        .code(200)
+                        .message("Bookings retrieved successfully")
+                        .data(bookingService.getBookings())
+                        .build()
+        );
+    }
+
+
 }
