@@ -3,6 +3,7 @@ package com.example.room.service.impl;
 import com.example.room.dto.RoomDTO;
 import com.example.room.entity.Room;
 import com.example.room.entity.RoomType;
+import com.example.room.entity.Status;
 import com.example.room.repo.RoomRepository;
 import com.example.room.service.RoomService;
 import com.example.room.util.exceptions.RoomAlreadyExistsException;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,12 +41,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Page<RoomDTO> getRoomsWithPagination(Integer page, Integer size, String roomNumber, RoomType type, Boolean isAvailable) {
-        log.info("Method getRoomsWithPagination called with page {}, size {}, roomNumber {}, type {}, isAvailable {}", page, size, roomNumber, type, isAvailable);
+    public Page<RoomDTO> getRoomsWithPagination(Integer page, Integer size, String roomNumber, RoomType type, Status availabilityStatus) {
+        log.info("Method getRoomsWithPagination called with page {}, size {}, roomNumber {}, type {}, isAvailable {}", page, size, roomNumber, type, availabilityStatus);
 
         try{
             Pageable pageable = PageRequest.of(page, size);
-            return roomRepository.findRoomsWithPagination(roomNumber, type, isAvailable, pageable);
+            return roomRepository.findRoomsWithPagination(roomNumber, type, availabilityStatus, pageable);
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage());
             throw e;
@@ -54,11 +54,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDTO> getRoomsWithoutPagination(String roomNumber, RoomType type, Boolean isAvailable) {
-        log.info("Method getRoomsWithoutPagination called with roomNumber {}, type {}, isAvailable {}", roomNumber, type, isAvailable);
+    public List<RoomDTO> getRoomsWithoutPagination(String roomNumber, RoomType type, Status availabilityStatus) {
+        log.info("Method getRoomsWithoutPagination called with roomNumber {}, type {}, availabilityStatus {}", roomNumber, type, availabilityStatus);
 
         try {
-            return roomRepository.findRoomsWithoutPagination(roomNumber, type, isAvailable).stream()
+            return roomRepository.findRoomsWithoutPagination(roomNumber, type, availabilityStatus).stream()
                     .map((element) -> modelMapper.map(element, RoomDTO.class)).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("ERROR: {}", e.getMessage());
@@ -93,7 +93,11 @@ public class RoomServiceImpl implements RoomService {
             room.setRoomNumber(roomDTO.getRoomNumber());
             room.setPrice(roomDTO.getPrice());
             room.setType(roomDTO.getType());
-            room.setIsAvailable(roomDTO.getIsAvailable());
+
+            if (roomDTO.getAvailabilityStatus() != null) {
+                room.setAvailabilityStatus(roomDTO.getAvailabilityStatus());
+            }
+
             roomRepository.save(room);
 
             log.info("updateRoom success with id {}", roomDTO.getId());

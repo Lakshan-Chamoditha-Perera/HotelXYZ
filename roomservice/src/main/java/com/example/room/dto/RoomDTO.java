@@ -2,6 +2,7 @@ package com.example.room.dto;
 
 
 import com.example.room.entity.RoomType;
+import com.example.room.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ public class RoomDTO {
     private Long id;
     private String roomNumber;
     private Double price;
-    private Boolean isAvailable;
+    private Status availabilityStatus;
     private RoomType type;
 }

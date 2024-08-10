@@ -17,7 +17,9 @@ public class Room {
     private Long id;
     private String roomNumber;
     private Double price;
-    private Boolean isAvailable;
+
+    @Enumerated(EnumType.STRING)
+    private Status availabilityStatus;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;

@@ -2,6 +2,7 @@ package com.example.room.controller;
 
 import com.example.room.dto.RoomDTO;
 import com.example.room.entity.RoomType;
+import com.example.room.entity.Status;
 import com.example.room.payloads.StandardResponse;
 import com.example.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +21,23 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<StandardResponse> getRooms(
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-            @RequestParam(name = "size",  required = false) Integer size,
+            @RequestParam(name = "size",defaultValue = "0", required = false) Integer size,
             @RequestParam(name = "roomNumber", required = false) String roomNumber,
             @RequestParam(name = "type", required = false) RoomType type,
-            @RequestParam(name = "isAvailable", required = false) Boolean isAvailable) {
+            @RequestParam(name = "availabilityStatus", required = false) Status availabilityStatus) {
 
         if (size == 0) {
             return ResponseEntity.ok(StandardResponse.builder()
                     .code(200)
                     .message("Rooms retrieved successfully")
-                    .data(roomService.getRoomsWithoutPagination(roomNumber, type, isAvailable))
+                    .data(roomService.getRoomsWithoutPagination(roomNumber, type, availabilityStatus))
                     .build());
         }
 
         return ResponseEntity.ok(StandardResponse.builder()
                 .code(200)
                 .message("Rooms retrieved successfully")
-                .data(roomService.getRoomsWithPagination(page, size, roomNumber, type, isAvailable))
+                .data(roomService.getRoomsWithPagination(page, size, roomNumber, type, availabilityStatus))
                 .build());
     }
 

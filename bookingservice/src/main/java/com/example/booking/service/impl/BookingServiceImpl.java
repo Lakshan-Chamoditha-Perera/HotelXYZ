@@ -7,6 +7,7 @@ import com.example.customer.dto.CustomerDTO;
 import com.example.booking.service.BookingService;
 import com.example.customer.util.exceptions.custom.CustomerNotFoundException;
 import com.example.room.dto.RoomDTO;
+import com.example.room.entity.Status;
 import com.example.room.util.exceptions.RoomNotAvailableException;
 import com.example.room.util.exceptions.RoomNotFoundException;
 import jakarta.transaction.Transactional;
@@ -70,8 +71,11 @@ public class BookingServiceImpl implements BookingService {
                     throw new RoomNotFoundException("Room not found for ID: " + roomId);
                 }
 
-                if (!roomDTO.getIsAvailable()) {
-                    throw new RoomNotAvailableException("Room with ID " + roomId + " is not available for the specified dates.");
+                switch (roomDTO.getAvailabilityStatus()){
+                    case NOT_AVAILABLE:
+                        throw new RoomNotAvailableException("Room with ID " + roomId + " is not available for the specified dates.");
+                    case PENDING:
+                        throw  new RoomNotAvailableException("Room with ID " + roomId + " is under review.");
                 }
 
                 //accumulate total amount
@@ -101,7 +105,7 @@ public class BookingServiceImpl implements BookingService {
 
             //5. set isAvailable to false in rooms
             for (RoomDTO roomDTO : bookedRooms) {
-                roomDTO.setIsAvailable(false);
+                roomDTO.setAvailabilityStatus(Status.NOT_AVAILABLE);
                 roomWebClient
                         .patch()
                         .uri("/rooms/{roomId}", roomDTO.getId())
