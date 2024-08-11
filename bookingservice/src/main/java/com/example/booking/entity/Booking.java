@@ -22,6 +22,9 @@ public class Booking {
     private LocalDate checkOutDate;
     private Double totalAmount;
 
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+
     @ElementCollection
     @CollectionTable(name = "booking_rooms", joinColumns = @JoinColumn(name = "booking_id"))
     private List<Long> roomIds;
