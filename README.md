@@ -40,3 +40,9 @@ HotelXYZ is a microservices-based project designed to manage hotel operations ef
 - MySQL database
 - Eureka Server
 - API Gateway
+
+## API Documentation 
+
+For detailed API documentation, please visit the following Postman link:
+
+[API Documentation](https://www.postman.com/winter-star-407690/workspace/public/collection/28283358-338421c3-5f73-4f82-b536-e8c201dada0c?action=share&creator=28283358)
